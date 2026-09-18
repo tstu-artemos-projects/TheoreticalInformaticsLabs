@@ -1,4 +1,6 @@
-namespace Contracts.BuisnessLogic;
+using System.Diagnostics.CodeAnalysis;
+
+namespace Contracts.BusinessLogic;
 
 public class Guard
 {
@@ -9,7 +11,7 @@ public class Guard
   /// <param name="condition">условие</param>
   /// <param name="message">сообщение при невыполнении</param>
   /// <exception cref="ArgumentException">невыполненное условние</exception>
-  public static void Requires(bool condition, string message) {
+  public static void Requires([DoesNotReturnIf(false)] bool condition, string message) {
     if (!condition)
       throw new ArgumentException(message);
   }

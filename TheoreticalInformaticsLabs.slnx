@@ -1,7 +1,7 @@
 <Solution>
   <Folder Name="/Contracts/">
     <Project Path="Contracts/Contracts.Avalonia/Contracts.Avalonia.csproj" />
-    <Project Path="Contracts/Contracts.BuisnessLogic/Contracts.BuisnessLogic.csproj" />
+    <Project Path="Contracts\Contracts.BusinessLogic\Contracts.BusinessLogic.csproj" />
   </Folder>
   <Folder Name="/Tests/">
     <Project Path="Tests/Contracts.Tests/Contracts.Tests.csproj" />

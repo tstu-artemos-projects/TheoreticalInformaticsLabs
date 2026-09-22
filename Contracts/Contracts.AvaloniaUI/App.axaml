@@ -1,0 +1,19 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Contracts.AvaloniaUI.App"
+             xmlns:infrastructure="clr-namespace:Contracts.AvaloniaUI.Infrastructure"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <infrastructure:ViewLocator />
+    </Application.DataTemplates>
+    <Application.Styles>
+        <FluentTheme />
+    </Application.Styles>
+    <Application.Resources>
+         <SolidColorBrush x:Key="StatusSuccessBrush" Color="#2E7D32" />
+         <SolidColorBrush x:Key="StatusErrorBrush" Color="#D32F2F" />
+         <SolidColorBrush x:Key="StatusNeutralBrush" Color="#808080" />
+    </Application.Resources>
+</Application>

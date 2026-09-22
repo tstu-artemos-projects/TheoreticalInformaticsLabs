@@ -1,7 +1,7 @@
 using System;
 using Avalonia;
 
-namespace Contracts.Avalonia;
+namespace Contracts.AvaloniaUI;
 
 class Program
 {

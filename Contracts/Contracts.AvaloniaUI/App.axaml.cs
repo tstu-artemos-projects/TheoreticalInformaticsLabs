@@ -4,7 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Contracts.Avalonia;
+namespace Contracts.AvaloniaUI;
 
 /// <summary>
 /// Логика для App.axaml

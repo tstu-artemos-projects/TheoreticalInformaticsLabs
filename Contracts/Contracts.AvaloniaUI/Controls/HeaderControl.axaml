@@ -1,0 +1,24 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="using:Contracts.AvaloniaUI.Controls"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Contracts.AvaloniaUI.Controls.HeaderControl"
+             x:DataType="controls:HeaderControl">
+    <Grid ColumnDefinitions="*,Auto">
+        <TextBlock Grid.Column="0"
+                   Text="{Binding Operation.Title, RelativeSource={RelativeSource AncestorType=controls:HeaderControl}}"
+                   VerticalAlignment="Center"
+                   FontSize="16"
+                   FontWeight="SemiBold" />
+
+        <Button Grid.Column="1"
+                FontSize="12"
+                Content="Показать контракт"
+                Command="{Binding ContractCommand, RelativeSource={RelativeSource AncestorType=controls:HeaderControl}}"
+                CommandParameter="{Binding ContractCommandParameter, RelativeSource={RelativeSource AncestorType=controls:HeaderControl}}"
+                VerticalAlignment="Center" />
+    </Grid>
+</UserControl>
+

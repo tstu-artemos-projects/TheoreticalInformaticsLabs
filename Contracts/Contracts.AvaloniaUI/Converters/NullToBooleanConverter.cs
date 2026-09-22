@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using Avalonia.Data.Converters;
 
-namespace Contracts.Avalonia.Converters;
+namespace Contracts.AvaloniaUI.Converters;
 
 /// <summary>
 /// Определяет булево значение в зависимости от

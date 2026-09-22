@@ -1,0 +1,37 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:infrastructure="using:Contracts.AvaloniaUI.Infrastructure"
+        x:DataType="infrastructure:IOperation"
+        x:Class="Contracts.AvaloniaUI.Windows.ContractWindow"
+        Title="ContractWindow"
+        WindowStartupLocation="CenterOwner">
+    <ScrollViewer Padding="20">
+        <StackPanel Spacing="12">
+            <TextBlock Text="{Binding Title}" FontSize="18" FontWeight="Bold" />
+
+            <TextBlock Text="Предусловие (Pre):" FontWeight="Bold" Foreground="{DynamicResource SystemControlHighlightAccentBrush}" />
+            <TextBlock Text="{Binding PreConditionDescription}" TextWrapping="Wrap" Margin="10,0,0,0" />
+
+            <TextBlock Text="Постусловие (Post):" FontWeight="Bold" Foreground="{DynamicResource SystemControlHighlightAccentBrush}" />
+            <TextBlock Text="{Binding PostConditionDescription}" TextWrapping="Wrap" Margin="10,0,0,0" />
+
+            <TextBlock Text="Побочные эффекты / Исключения:" FontWeight="Bold" Foreground="{DynamicResource SystemControlHighlightAccentBrush}" />
+            <TextBlock Text="{Binding SideEffectsDescription}" TextWrapping="Wrap" Margin="10,0,0,0" />
+
+            <Separator Margin="0,5" Height="1" Background="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+
+            <TextBlock Text="Валидный пример:" FontWeight="Bold" />
+            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" Padding="8" CornerRadius="4">
+                <TextBlock Text="{Binding ValidExample}" FontFamily="Monospace" />
+            </Border>
+
+            <TextBlock Text="Невалидный пример:" FontWeight="Bold" />
+            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" Padding="8" CornerRadius="4">
+                <TextBlock Text="{Binding InvalidExample}" FontFamily="Monospace" />
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</Window>

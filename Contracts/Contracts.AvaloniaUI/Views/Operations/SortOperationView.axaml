@@ -1,0 +1,58 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:vm="using:Contracts.AvaloniaUI.ViewModels.Operations"
+             x:Class="Contracts.AvaloniaUI.Views.Operations.SortOperationView"
+             x:DataType="vm:SortOperationViewModel">
+    <StackPanel Spacing="15">
+        <TextBlock Text="{Binding Description}" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}" TextWrapping="Wrap"/>
+
+        <StackPanel Spacing="5">
+            <TextBlock Text="Элементы вектора (через запятую):" FontWeight="Medium"/>
+            <TextBox Text="{Binding InputText, Mode=TwoWay}" PlaceholderText="Например: 5, -2, 8, 1"/>
+        </StackPanel>
+
+        <Button Content="Выполнить Sort()" Command="{Binding ExecuteCommand}" HorizontalAlignment="Left" Width="150" Classes="accent"/>
+
+        <StackPanel Spacing="5">
+            <TextBlock Text="Отсортированный вектор:" FontWeight="Medium"/>
+            <TextBox Text="{Binding ResultText}" IsReadOnly="True"/>
+        </StackPanel>
+
+        <Separator Margin="0,10" Height="1" Background="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+
+        <StackPanel Spacing="8">
+            <TextBlock Text="Статус контрактов:" FontWeight="Bold"/>
+
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <Ellipse Width="12" Height="12" Classes="pre-indicator">
+                    <Classes.met><Binding Path="IsPreMet"/></Classes.met>
+                </Ellipse>
+                <TextBlock Text="Предусловие (Pre):" FontWeight="SemiBold"/>
+                <TextBlock Text="Выполнено" IsVisible="{Binding IsPreMet}" Foreground="{DynamicResource StatusSuccessBrush}"/>
+                <TextBlock Text="Не выполнено" IsVisible="{Binding !IsPreMet}" Foreground="{DynamicResource StatusErrorBrush}"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Spacing="10">
+                <Ellipse Width="12" Height="12" Classes="post-indicator">
+                    <Classes.success>
+                        <Binding Path="IsPostMet"
+                                 Converter="{x:Static ObjectConverters.Equal}"
+                                 ConverterParameter="{x:True}"/>
+                    </Classes.success>
+                    <Classes.failed>
+                        <Binding Path="IsPostMet"
+                                 Converter="{x:Static ObjectConverters.Equal}"
+                                 ConverterParameter="{x:False}"/>
+                    </Classes.failed>
+                </Ellipse>
+                <TextBlock Text="Постусловие (Post):" FontWeight="SemiBold"/>
+                <TextBlock Text="Не проверялось" IsVisible="{Binding IsPostMet, Converter={x:Static ObjectConverters.IsNull}}" Foreground="{DynamicResource StatusNeutralBrush}"/>
+                <TextBlock Text="Выполнено" IsVisible="{Binding IsPostMet, FallbackValue=False}" Foreground="{DynamicResource StatusSuccessBrush}"/>
+                <TextBlock Text="Не выполнено" IsVisible="{Binding IsPostMet, Converter={x:Static BoolConverters.Not}, FallbackValue=False}" Foreground="{DynamicResource StatusErrorBrush}"/>
+            </StackPanel>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

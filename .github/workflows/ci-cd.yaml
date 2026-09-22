@@ -1,0 +1,150 @@
+name: .NET CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # -------------------------------------------------------------
+  # 1. Проверка зависимостей и уязвимостей (Security Audit)
+  # -------------------------------------------------------------
+  security-audit:
+    name: Security & Vulnerability Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          cache: true
+          cache-dependency-path: '**/*.csproj'
+
+      - name: Audit NuGet Packages
+        run: dotnet list package --vulnerable --include-transitive
+
+  # -------------------------------------------------------------
+  # 2. Прогон Unit-тестов
+  # -------------------------------------------------------------
+  test:
+    name: Run Unit Tests
+    needs: security-audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          cache: true
+          cache-dependency-path: '**/*.csproj'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Run Tests with Coverage
+        run: >
+            dotnet test --no-restore --configuration Release
+            --collect:"XPlat Code Coverage"
+            --results-directory ./TestResults
+
+      - name: Install ReportGenerator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+      - name: Generate Coverage Report
+        run: >
+          reportgenerator
+          -reports:"./TestResults/**/coverage.cobertura.xml"
+          -targetdir:"./CoverageReport"
+          -reporttypes:"Html;SummaryGithub"
+
+      - name: Add Coverage Summary to Job
+        run: cat ./CoverageReport/SummaryGithub.md >> $GITHUB_STEP_SUMMARY
+
+      - name: Upload Coverage HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: Code-Coverage-Report
+          path: ./CoverageReport
+
+  # -------------------------------------------------------------
+  # 3. Мультиплатформенная сборка
+  # -------------------------------------------------------------
+  build-and-publish:
+    name: Build for ${{ matrix.target_os }}
+    needs: test
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            target_os: win-x64
+          - os: ubuntu-latest
+            target_os: linux-x64
+          - os: macos-latest
+            target_os: osx-x64
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+          cache: true
+          cache-dependency-path: '**/*.csproj'
+
+      - name: Find and Publish all Avalonia UI Projects
+        shell: pwsh
+        run: |
+          $projects = Get-ChildItem -Recurse -Filter *.csproj \vert{} Where-Object {$_.FullName -notmatch "Test" }
+
+          foreach ($project in$projects) {
+            $projectName =$project.BaseName
+            $outputDir = "./artifacts/${projectName}-${{ matrix.target_os }}"
+
+            Write-Host "=== Publishing $projectName for${{ matrix.target_os }} ==="
+
+            dotnet publish $project.FullName `
+              -c Release `
+              -r ${{ matrix.target_os }} `
+              --self-contained true `
+              -p:PublishSingleFile=true `
+              -p:IncludeNativeLibrariesForSelfExtract=true `
+              -o $outputDir
+
+            # Упаковываем каждый собранный проект в ZIP-архив
+            Compress-Archive -Path "$outputDir\*" -DestinationPath "./${projectName}-${{ matrix.target_os }}.zip"
+          }
+
+    - name: Upload Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: All-Labs-${{ matrix.target_os }}
+        path: ./*.zip
+
+  # -------------------------------------------------------------
+  # 4. Релиз на GitHub (при создании тега, например v1.0)
+  # -------------------------------------------------------------
+  release:
+    name: Create GitHub Release
+    needs: build-and-publish
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Publish Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            */*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

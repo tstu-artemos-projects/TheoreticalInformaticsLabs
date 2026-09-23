@@ -6,8 +6,8 @@ namespace Contracts.AvaloniaUI.Windows;
 
 public partial class ContractWindow : Window
 {
-    public ContractWindow()
-    {
-        InitializeComponent();
-    }
+  public ContractWindow()
+  {
+    InitializeComponent();
+  }
 }

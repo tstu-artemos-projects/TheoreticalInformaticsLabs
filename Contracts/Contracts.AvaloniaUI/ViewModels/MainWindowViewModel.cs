@@ -10,30 +10,30 @@ namespace Contracts.AvaloniaUI.ViewModels;
 
 public partial class MainWindowViewModel : ObservableObject
 {
-    public ObservableCollection<IOperation> Operations { get; } = new();
+  public ObservableCollection<IOperation> Operations { get; } = new();
 
-    [ObservableProperty]
-    private IOperation? _selectedOption;
+  [ObservableProperty]
+  private IOperation? _selectedOption;
 
-    public MainWindowViewModel()
+  public MainWindowViewModel()
+  {
+    Operations.Add(new SortOperationViewModel());
+    Operations.Add(new FindMinMaxOperationViewModel());
+    Operations.Add(new SumOperationViewModel());
+
+    SelectedOption = Operations.FirstOrDefault();
+  }
+
+  [RelayCommand]
+  private async Task ShowContractAsync(IOperation? operation)
+  {
+    if (operation == null) return;
+
+    var dialog = new Windows.ContractWindow { DataContext = operation };
+
+    if (Avalonia.Application.Current?.ApplicationLifetime is Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop)
     {
-        Operations.Add(new SortOperationViewModel());
-        Operations.Add(new FindMinMaxOperationViewModel());
-        Operations.Add(new SumOperationViewModel());
-
-        SelectedOption = Operations.FirstOrDefault();
+      await dialog.ShowDialog(desktop?.MainWindow);
     }
-
-    [RelayCommand]
-    private async Task ShowContractAsync(IOperation? operation)
-    {
-        if (operation == null) return;
-
-        var dialog = new Windows.ContractWindow { DataContext = operation };
-
-        if (Avalonia.Application.Current?.ApplicationLifetime is Avalonia.Controls.ApplicationLifetimes.IClassicDesktopStyleApplicationLifetime desktop)
-        {
-            await dialog.ShowDialog(desktop?.MainWindow);
-        }
-    }
+  }
 }

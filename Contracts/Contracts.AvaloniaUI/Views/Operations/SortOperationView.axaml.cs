@@ -6,8 +6,8 @@ namespace Contracts.AvaloniaUI.Views.Operations;
 
 public partial class SortOperationView : UserControl
 {
-    public SortOperationView()
-    {
-        InitializeComponent();
-    }
+  public SortOperationView()
+  {
+    InitializeComponent();
+  }
 }

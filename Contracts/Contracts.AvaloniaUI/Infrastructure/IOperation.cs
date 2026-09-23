@@ -2,20 +2,23 @@ using System.ComponentModel;
 
 namespace Contracts.AvaloniaUI.Infrastructure;
 
+/// <summary>
+/// Операция в интерфейсе
+/// </summary>
 public interface IOperation : INotifyPropertyChanged
 {
-    string Title { get; }
-    string Description { get; }
+  string Title { get; }
+  string Description { get; }
 
-    string PreConditionDescription { get; }
-    string PostConditionDescription { get; }
-    string SideEffectsDescription { get; }
-    string ValidExample { get; }
-    string InvalidExample { get; }
+  string PreConditionDescription { get; }
+  string PostConditionDescription { get; }
+  string SideEffectsDescription { get; }
+  string ValidExample { get; }
+  string InvalidExample { get; }
 
-    bool IsPreMet { get; }
-    bool? IsPostMet { get; } // Если null - то значит ничего не запускали
+  bool IsPreMet { get; }
+  bool? IsPostMet { get; } // Если null - то значит ничего не запускали
 
-    void EvaluatePreconditions();
-    void Execute();
+  void EvaluatePreconditions();
+  void Execute();
 }

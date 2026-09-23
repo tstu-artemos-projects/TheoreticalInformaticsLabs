@@ -6,8 +6,8 @@ namespace Contracts.AvaloniaUI.Views.Operations;
 
 public partial class SumOperationView : UserControl
 {
-    public SumOperationView()
-    {
-        InitializeComponent();
-    }
+  public SumOperationView()
+  {
+    InitializeComponent();
+  }
 }

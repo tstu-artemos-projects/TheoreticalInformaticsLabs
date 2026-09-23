@@ -6,8 +6,8 @@ namespace Contracts.AvaloniaUI.Views.Operations;
 
 public partial class FindMinMaxOperationView : UserControl
 {
-    public FindMinMaxOperationView()
-    {
-        InitializeComponent();
-    }
+  public FindMinMaxOperationView()
+  {
+    InitializeComponent();
+  }
 }

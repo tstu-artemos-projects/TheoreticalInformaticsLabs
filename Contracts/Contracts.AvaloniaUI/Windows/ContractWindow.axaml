@@ -6,7 +6,7 @@
         xmlns:infrastructure="using:Contracts.AvaloniaUI.Infrastructure"
         x:DataType="infrastructure:IOperation"
         x:Class="Contracts.AvaloniaUI.Windows.ContractWindow"
-        Title="ContractWindow"
+        Title="Контракт"
         WindowStartupLocation="CenterOwner">
     <ScrollViewer Padding="20">
         <StackPanel Spacing="12">

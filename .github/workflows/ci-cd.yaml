@@ -130,7 +130,7 @@ jobs:
         path: ./*.zip
 
   # -------------------------------------------------------------
-  # 4. Релиз на GitHub (при создании тега, например v1.0)
+  # 4. Релиз на GitHub
   # -------------------------------------------------------------
   release:
     name: Create GitHub Release
@@ -142,7 +142,7 @@ jobs:
         uses: actions/download-artifact@v4
 
       - name: Publish Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
             */*.zip
